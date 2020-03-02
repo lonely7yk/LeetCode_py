@@ -63,12 +63,12 @@ class Solution:
             res += "#$"
             return res
 
-        C = 0
-        R = 0
+        C = 0   # 中心
+        R = 0   # 半径
         T = processStr(s)
-        P = [0 for i in range(len(T))]
-        maxP = 0
-        maxPIndex = -1
+        P = [0 for i in range(len(T))]  # 每个字符的半径
+        maxP = 0        # P 中的最大值
+        maxPIndex = -1  # P 中最大值的索引
 
         for i in range(1, len(T) - 1):
             iMirror = 2 * C - i;
