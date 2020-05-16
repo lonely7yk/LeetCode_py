@@ -21,7 +21,7 @@ coordinates contains no duplicate point.
 
 from typing import List
 
-# O(n)
+# O(n) : use cross product instead of division
 class Solution:
     def checkStraightLine(self, coordinates: List[List[int]]) -> bool:
         if len(coordinates) <= 2: return True
