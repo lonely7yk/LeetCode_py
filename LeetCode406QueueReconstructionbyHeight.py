@@ -1,24 +1,34 @@
 from typing import List
 import collections
 
+# class Solution:
+#     # Insert Sort: O(nlogn) 96ms 83%
+#     def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
+#         d = collections.defaultdict(list)
+#         heights = set()
+#         res = []
+
+#         for p in people:
+#             d[p[0]].append(p[1])
+#             heights.add(p[0])
+
+#         heights = sorted(list(heights), key=lambda x: -x)   # 逆序排序
+
+#         for height in heights:
+#             idxes = d[height]
+#             idxes.sort()
+#             for idx in idxes:
+#                 res.insert(idx, [height, idx])
+
+#         return res
+
+# O(nlogn): 上述方法的简化，直接按照高度逆序排序，然后按照索引正序排序，然后按照索引一个个插入即可
 class Solution:
-    # Insert Sort: O(nlogn) 96ms 83%
     def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
-        d = collections.defaultdict(list)
-        heights = set()
+        people.sort(key=lambda x:(-x[0],x[1]))
         res = []
-
         for p in people:
-            d[p[0]].append(p[1])
-            heights.add(p[0])
-
-        heights = sorted(list(heights), key=lambda x: -x)   # 逆序排序
-
-        for height in heights:
-            idxes = d[height]
-            idxes.sort()
-            for idx in idxes:
-                res.insert(idx, [height, idx])
+            res.insert(p[1], p)
 
         return res
 
