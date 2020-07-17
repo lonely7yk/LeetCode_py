@@ -62,6 +62,35 @@ class Solution:
 #         return [x for _,x in heap]
 
 
+# # QuickSearch: O(nlogn)
+# class Solution:
+#     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+#         def partition(unique, counter, left, right):
+#             pivot = counter[unique[left]]
+#             i, j = left, right
+            
+#             while i < j:
+#                 while i < j and pivot >= counter[unique[j]]: j -= 1
+#                 while i < j and counter[unique[i]] >= pivot: i += 1
+                    
+#                 if i < j:
+#                     unique[i], unique[j] = unique[j], unique[i]
+#                 else:
+#                     unique[left], unique[j] = unique[j], unique[left]
+            
+#             return j
+        
+#         def quickSearch(unique, counter, left, right):
+#             mid = partition(unique, counter, left, right)
+#             if mid == k - 1: return
+#             elif mid > k - 1: quickSearch(unique, counter, left, mid - 1)
+#             else: quickSearch(unique, counter, mid + 1, right)
+        
+#         counter = Counter(nums)
+#         unique = list(counter.keys())
+#         quickSearch(unique, counter, 0, len(unique) - 1)
+#         return unique[:k]
+
 nums = [1,1,1,2,2,3]
 k = 2
 
