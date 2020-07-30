@@ -56,7 +56,7 @@ class Solution:
             if res[-1][1] != -heap[0][0]:               # heap 最高高度和 res 上一个添加的高度不一致，说明这一定是一个轮廓点
                 res += [[pos, -heap[0][0]]]
 
-        return res
+        return res[1:]
 
 # # 5% 这种方法太慢了，主要右边界从堆中删除以后还要进行堆化
 # class Solution:
