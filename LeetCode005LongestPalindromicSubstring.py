@@ -50,6 +50,24 @@ class Solution:
 
     #     return res
 
+    # # DP: O(n^2) - O(n^2) 30%
+    # class Solution:
+    # def longestPalindrome(self, s: str) -> str:
+    #     n = len(s)
+    #     dp = [[False for j in range(n)] for i in range(n)]  # 如果 i~j 为回文，那么 dp[i][j] == True
+    #     res = ""
+        
+    #     for i in range(n):
+    #         for j in range(i, -1, -1):
+    #             if s[i] == s[j]:
+    #                 if i - j + 1 <= 3 or dp[j + 1][i - 1]:
+    #                     dp[j][i] = True
+                
+    #             if dp[j][i] and i - j + 1 > len(res):
+    #                 res = s[j:i+1]
+                    
+    #     return res
+
     # manacher: O(n) 84ms 96%
     # reference: https://zhuanlan.zhihu.com/p/70532099
     def longestPalindrome(self, s: str) -> str:
