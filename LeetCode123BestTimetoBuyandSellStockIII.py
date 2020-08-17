@@ -113,7 +113,7 @@ class Solution:
 
         n = len(prices)
         transNum = 2
-        dp = [[0 for i in range(n)] for i in range(transNum + 1)]
+        dp = [[0 for i in range(n)] for k in range(transNum + 1)]
 
         for k in range(1, transNum + 1):
             min_ = prices[0]
