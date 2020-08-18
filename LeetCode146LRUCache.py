@@ -29,6 +29,7 @@ cache.get(1);       // returns -1 (not found)
 cache.get(3);       // returns 3
 cache.get(4);       // returns 4
 """
+import collections
 
 
 class LinkedNode:
@@ -86,6 +87,27 @@ class LRUCache:
         p.next = n
         n.pre = p
 
+# # OrderedDict
+# class LRUCache:
+#
+#     def __init__(self, capacity: int):
+#         self.cap = capacity
+#         self.dict = collections.OrderedDict()
+#
+#     def get(self, key: int) -> int:
+#         if key not in self.dict:
+#             return -1
+#         else:
+#             self.dict.move_to_end(key, last=True)
+#             return self.dict[key]
+#
+#     def put(self, key: int, value: int) -> None:
+#         if key in self.dict:
+#             self.dict.pop(key)
+#
+#         self.dict[key] = value
+#         if len(self.dict) > self.cap:
+#             self.dict.popitem(last=False)
 
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
