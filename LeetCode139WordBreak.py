@@ -22,6 +22,8 @@ Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
 Output: false
 """
 
+from typing import List
+
 class Solution:
     # # DP: O(n^2)
     # def wordBreak(self, s: str, wordDict: List[str]) -> bool:
