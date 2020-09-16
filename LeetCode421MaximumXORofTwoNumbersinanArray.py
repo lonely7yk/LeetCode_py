@@ -16,6 +16,7 @@ Explanation: The maximum result is 5 ^ 25 = 28.
 
 from typing import List
 
+
 # Bit Manipulation: O(n)
 class Solution:
     def findMaximumXOR(self, nums: List[int]) -> int:
@@ -41,6 +42,50 @@ class Solution:
                     break
 
         return maxValue
+
+
+# # Trie
+# class TrieNode:
+#     def __init__(self):
+#         self.children = [None, None]
+
+# class Trie:
+#     def __init__(self):
+#         self.root = TrieNode()
+
+#     def addNode(self, num):
+#         p = self.root
+#         for i in range(31, -1, -1):
+#             curBit = (num >> i) & 1
+#             if not p.children[curBit]:
+#                 p.children[curBit] = TrieNode()
+#             p = p.children[curBit]
+
+# class Solution:
+#     def findMaximumXOR(self, nums: List[int]) -> int:
+#         trie = Trie()
+#         res = 0
+
+#         # Build Trie
+#         for num in nums:
+#             trie.addNode(num)
+
+#         for num in nums:
+#             p = trie.root
+#             curVal = 0
+
+#             for i in range(31, -1, -1):
+#                 curBit = (num >> i) & 1
+#                 # 如果是 0，就看 1 是否存在 children 中，如果是 1 就看 0 是否存在 children 中
+#                 if p.children[curBit ^ 1]:
+#                     curVal = curVal | (1 << i)
+#                     p = p.children[curBit ^ 1]
+#                 else:
+#                     p = p.children[curBit]
+
+#             res = max(res, curVal)
+
+#         return res
 
 
 nums = [3, 10, 5, 25, 2, 8]
