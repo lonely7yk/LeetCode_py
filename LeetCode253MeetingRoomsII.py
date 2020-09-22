@@ -43,22 +43,40 @@ import heapq
 
 #         return res
 
-# Heap: O(nlogn) - O(n)
-# 这个就好理解好多了。interval 先按照 start 排序。然后定义一个 min heap，存的是 interval 的 end。
-# 对于每一个 interval，如果 start 大于等于 heap 堆顶的 end，说明这个 start 可以用当前的 room，直接替换堆顶的 end 为当前 interval 的 end
-# 否则，说明没有空的 room，需要再添加一个 room。最后只要看 heap 的长度就可以知道教室的数量
+# # Heap: O(nlogn) - O(n)
+# # 这个就好理解好多了。interval 先按照 start 排序。然后定义一个 min heap，存的是 interval 的 end。
+# # 对于每一个 interval，如果 start 大于等于 heap 堆顶的 end，说明这个 start 可以用当前的 room，直接替换堆顶的 end 为当前 interval 的 end
+# # 否则，说明没有空的 room，需要再添加一个 room。最后只要看 heap 的长度就可以知道教室的数量
+# class Solution:
+#     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+#         intervals.sort(key=lambda x: x[0])
+#         heap = []
+
+#         for interval in intervals:
+#             if heap and interval[1] >= heap[0]:
+#                 heapq.heapreplace(heap, interval[1])
+#             else:
+#                 heapq.heappush(heap, interval[1])
+
+#         return len(heap)
+
+
+# Timestamp: O(nlogn)
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
-        intervals.sort(key=lambda x: x[0])
-        heap = []
-
+        timestamps = []
         for interval in intervals:
-            if heap and interval[1] >= heap[0]:
-                heapq.heapreplace(heap, interval[1])
-            else:
-                heapq.heappush(heap, interval[1])
-
-        return len(heap)
+            timestamps.append((interval[0], 1))     # 表示上课，加一间教室
+            timestamps.append((interval[1], -1))    # 表示下课，减一间教室
+        
+        curRooms = 0
+        res = 0
+        timestamps.sort()
+        for timestamp in timestamps:
+            curRooms += timestamp[1]
+            res = max(res, curRooms)
+            
+        return res
 
 
 intervals = [[2,15],[36,45],[9,29],[16,23],[4,9]]
