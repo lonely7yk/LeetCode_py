@@ -68,6 +68,39 @@ class Solution:
 
     #     return l + 1
 
+    # # 法三：O(n)-O(1)
+    # # 先判断 1 是否存在与 nums 中，如果不在直接返回 1. 否则，把所有不在 (1, n+1) 范围的数都改成 1。
+    # # 遍历一遍数组，把 nums[i] 看成索引，把对应索引位置设置为负数。
+    # # 最后看索引 2~n+1 索引位置的数为正数的第一个索引，就是第一个没出现的数
+    # def firstMissingPositive(self, nums: List[int]) -> int:
+    #     n = len(nums)
+    #     flag1 = False   # 1 是否存在于 nums 中
+    #     for i in range(n):
+    #         if nums[i] == 1:
+    #             flag1 = True
+                
+    #         if nums[i] <= 0 or nums[i] > n + 1:
+    #             nums[i] = 1
+                
+    #     if not flag1: return 1
+        
+    #     # 是 nums 长度变为 n+2 这样就会有 2~n+1 的索引
+    #     # 如果不想修改 nums 长度，可以把 0 索引用来存储第 n 个数
+    #     nums.append(1)
+    #     nums.append(1)
+        
+    #     for i in range(n + 2):
+    #         idx = abs(nums[i])
+    #         if nums[idx] > 0:
+    #             # 出现过的数标记成负数
+    #             nums[idx] = -nums[idx]
+        
+    #     for i in range(2, n + 2):
+    #         if nums[i] > 0:
+    #             return i
+            
+    #     return -1
+
 if __name__ == '__main__':
     # nums = [1,2,0]
     # nums = [3,4,-1,1]
