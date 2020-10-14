@@ -54,7 +54,7 @@ Output: false
 """
 
 class Solution:
-    # 44ms 97%
+    # Two pointers: O(m + n) 44ms 97%
     # 参考：https://leetcode.com/problems/wildcard-matching/discuss/17810/Linear-runtime-and-constant-space-solution
     def isMatch(self, s: str, p: str) -> bool:
         spoint, ppoint = 0, 0
@@ -79,6 +79,29 @@ class Solution:
             ppoint += 1
 
         return ppoint == len(p) 
+
+
+    # # DP: O(mn) 26%
+    # def isMatch(self, s: str, p: str) -> bool:
+    #     m, n = len(s), len(p)
+    #     dp = [[False for j in range(n + 1)] for i in range(m + 1)]
+    #     dp[0][0] = True
+        
+    #     for i in range(1, n + 1):
+    #         if p[i - 1] == '*':
+    #             dp[0][i] = True
+    #         else:
+    #             break
+                
+    #     for  i in range(1, m + 1):
+    #         for j in range(1, n + 1):
+    #             if p[j - 1] == '?' or s[i - 1] == p[j - 1]:
+    #                 dp[i][j] = dp[i - 1][j - 1]
+    #             elif p[j - 1] == '*':
+    #                 dp[i][j] = dp[i][j - 1] or dp[i - 1][j - 1] or dp[i - 1][j]
+        
+    #     return dp[-1][-1]
+        
 
     # # DFS: TLE
     # def isMatch(self, s: str, p: str) -> bool:
