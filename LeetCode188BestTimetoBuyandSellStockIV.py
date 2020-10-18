@@ -28,58 +28,112 @@ Explanation: Buy on day 2 (price = 2) and sell on day 3 (price = 6),
 
 from typing import List
 
+# class Solution:
+#     # # dp[k,i] = max(dp[k,i-1], max(prices[i] - prices[j] + dp[k-1,j-1])), j=1,...,i
+#     # DP: O(k*n^2) TLE
+#     # def maxProfit(self, k: int, prices: List[int]) -> int:
+#     #     if not prices or len(prices) == 1: return 0
+
+#     #     n = len(prices)
+#     #     dp = [[0 for i in range(n)] for j in range(k + 1)]
+#     #     # dp[0][0] = 0
+#     #     # dp[1][0] = 0
+#     #     # dp[0][1] = 0
+
+#     #     for k_ in range(1, k + 1):
+#     #         for i in range(1, n):
+#     #             min_ = prices[0]    # 把边界条件0考虑进去
+#     #             for j in range(1, i + 1):
+#     #                 min_ = min(min_, prices[j] - dp[k_ - 1][j - 1])
+
+#     #             dp[k_][i] = max(dp[k_][i - 1], prices[i] - min_)
+
+#     #     return dp[k][n - 1]
+
+#     # DP: O(n^2) - O(kn) 115ms 44%
+#     # 上面方法的改进
+#     def maxProfit(self, k: int, prices: List[int]) -> int:
+#         def quickSolve(prices):
+#             """ 如果 k > len(prices) 相当于能做无限次交易 """
+#             n = len(prices)
+#             profit = 0
+#             for i in range(1, n):
+#                 if (prices[i] > prices[i - 1]):
+#                     profit += prices[i] - prices[i - 1]
+
+#             return profit
+
+
+#         if not prices or len(prices) == 1: return 0
+#         # 下面这句很重要
+#         if k > len(prices) / 2: return quickSolve(prices)
+
+#         n = len(prices)
+#         dp = [[0 for i in range(n)] for j in range(k + 1)]
+
+#         for k_ in range(1, k + 1):
+#             min_ = prices[0]    # 把边界条件0考虑进去
+#             for i in range(1, n):
+#                 # for j in range(1, i + 1):
+#                 #     min_ = min(min_, prices[j] - dp[k_ - 1][j - 1])
+#                 min_ = min(min_, prices[i] - dp[k_ - 1][i - 1])
+#                 dp[k_][i] = max(dp[k_][i - 1], prices[i] - min_)
+#         return dp[k][n - 1]
+
+
+# # 重新写了一下自己的版本
+# # dp[i][k] 表示 prices[0]...prices[i-1]   交易 k 次的最大收益
+# # dp[i][k] = max{dp[i-1][k], max_0<=j<=i-2(dp[j][k-1]+prices[i-1]-prices[j])}
+# def maxProfit(self, k: int, prices: List[int]) -> int:
+#     def quickSolve(prices):
+#         res = 0
+#         for i in range(1, len(prices)):
+#             res += max(0, prices[i] - prices[i - 1])
+#         return res
+    
+#     if k >= len(prices) / 2:
+#         return quickSolve(prices)
+    
+#     n = len(prices)
+#     dp = [[0 for j in range(k + 1)] for i in range(n + 1)]
+    
+#     for k_ in range(1, k + 1):
+#         min_ = float('inf')
+#         for i in range(1, n + 1):
+#             dp[i][k_] = dp[i - 1][k_]
+#             # for j in range(i - 2 + 1):
+#             #     dp[i][k_] = max(dp[i][k_], dp[j][k_ - 1] + prices[i - 1] - prices[j])
+#             min_ = min(min_, prices[i - 1] - dp[i - 1][k_ - 1]) # 把上面循环改成这个减少复杂度
+#             dp[i][k_] = max(dp[i][k_], prices[i - 1] - min_)
+                
+#     return dp[n][k]
+
+# 上面 DP 的 improve 版本   空间变成 O(n)
 class Solution:
-    # # dp[k,i] = max(dp[k,i-1], max(prices[i] - prices[j] + dp[k-1,j-1])), j=1,...,i
-    # DP: O(k*n^2) TLE
-    # def maxProfit(self, k: int, prices: List[int]) -> int:
-    #     if not prices or len(prices) == 1: return 0
-
-    #     n = len(prices)
-    #     dp = [[0 for i in range(n)] for j in range(k + 1)]
-    #     # dp[0][0] = 0
-    #     # dp[1][0] = 0
-    #     # dp[0][1] = 0
-
-    #     for k_ in range(1, k + 1):
-    #         for i in range(1, n):
-    #             min_ = prices[0]    # 把边界条件0考虑进去
-    #             for j in range(1, i + 1):
-    #                 min_ = min(min_, prices[j] - dp[k_ - 1][j - 1])
-
-    #             dp[k_][i] = max(dp[k_][i - 1], prices[i] - min_)
-
-    #     return dp[k][n - 1]
-
-    # DP: O(n^2) - O(kn) 115ms 44%
-    # 上面方法的改进
     def maxProfit(self, k: int, prices: List[int]) -> int:
         def quickSolve(prices):
-            """ 如果 k > len(prices) 相当于能做无限次交易 """
-            n = len(prices)
-            profit = 0
-            for i in range(1, n):
-                if (prices[i] > prices[i - 1]):
-                    profit += prices[i] - prices[i - 1]
-
-            return profit
-
-
-        if not prices or len(prices) == 1: return 0
-        # 下面这句很重要
-        if k > len(prices) / 2: return quickSolve(prices)
-
+            res = 0
+            for i in range(1, len(prices)):
+                res += max(0, prices[i] - prices[i - 1])
+            return res
+        
+        if k >= len(prices) / 2:
+            return quickSolve(prices)
+        
         n = len(prices)
-        dp = [[0 for i in range(n)] for j in range(k + 1)]
-
+        dp = [0 for i in range(n + 1)]
+        
         for k_ in range(1, k + 1):
-            min_ = prices[0]    # 把边界条件0考虑进去
-            for i in range(1, n):
-                # for j in range(1, i + 1):
-                #     min_ = min(min_, prices[j] - dp[k_ - 1][j - 1])
-                min_ = min(min_, prices[i] - dp[k_ - 1][i - 1])
-                dp[k_][i] = max(dp[k_][i - 1], prices[i] - min_)
-        return dp[k][n - 1]
-
+            min_ = float('inf')
+            prev = 0
+            for i in range(1, n + 1):
+                tmp = dp[i]
+                dp[i] = dp[i - 1]
+                min_ = min(min_, prices[i - 1] - prev)
+                dp[i] = max(dp[i], prices[i - 1] - min_)
+                prev = tmp
+                    
+        return dp[n]
 
 
 if __name__ == '__main__':
