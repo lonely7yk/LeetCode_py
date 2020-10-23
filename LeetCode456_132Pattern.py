@@ -40,11 +40,15 @@ class Solution:
         third = float('-inf')
         stack = []
         
+        # 从后往前遍历
         for i in range(n - 1, -1, -1):
             num = nums[i]
+            # num < third, 说明第一个数找到了
             if num < third: 
                 return True
             else:
+                # num > 栈顶元素，说明 num 的后面有比他小的元素，这个时候更新 third 为比 num 小的最大元素
+                # second 这个时候就是 num
                 while stack and stack[-1] < num:
                     third = stack.pop()
                     
