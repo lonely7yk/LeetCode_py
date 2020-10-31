@@ -101,35 +101,78 @@ class Solution:
 
     #     inOrderTraversal2(root, nodes)
 
-    # Inorder Traserval: O(n) - O(1) 68ms 60.56%
-    def __init__(self):
-        self.firstNode, self.secondNode = None, None
-        self.preNode = TreeNode(float('-inf'))  # 为了在第一次判断时不进行赋值，所以设成 -inf
+    ####################################################
 
+    # # Inorder Traserval: O(n) - O(h) 68ms 60.56%
+    # def __init__(self):
+    #     self.firstNode, self.secondNode = None, None
+    #     self.preNode = TreeNode(float('-inf'))  # 为了在第一次判断时不进行赋值，所以设成 -inf
+
+    # def recoverTree(self, root: TreeNode) -> None:
+    #     self.inOrderTraversal(root)
+    #     self.firstNode.val, self.secondNode.val = self.secondNode.val, self.firstNode.val
+
+
+    # def inOrderTraversal(self, root):
+    #     if not root: return
+
+    #     self.inOrderTraversal(root.left)
+
+    #     # 这两个判断语句很重要，在 firstNode 没赋值的时候，如果 preNode 的值比当前值大，则对 firstNode 赋 preNode
+    #     # 如果 firstNode 赋过值了则不需要继续赋值，因为 secondNode 前一个元素（preNode）也满足这个条件
+    #     if not self.firstNode and self.preNode.val >= root.val:
+    #         self.firstNode = self.preNode
+
+    #     # 在 firstNode 赋值之后，才会赋 secondNode 的值，因为本来是顺序的，交换两个元素以后，大的元素（firstNode）在
+    #     # 前面，小的元素（secondNode）在后面。另外 firstNode 后面一个元素也满足这个条件，但是因为如果后面还满足条件，会
+    #     # 把当前值覆盖
+    #     if self.firstNode and self.preNode.val >= root.val:
+    #         self.secondNode = root
+
+    #     self.preNode = root # 当前值判断完后把当前 root 赋给 preNode
+
+    #     self.inOrderTraversal(root.right)
+
+    ####################################################
+
+    # Morris Traversal: O(n) - O(1)
     def recoverTree(self, root: TreeNode) -> None:
-        self.inOrderTraversal(root)
-        self.firstNode.val, self.secondNode.val = self.secondNode.val, self.firstNode.val
-
-
-    def inOrderTraversal(self, root):
-        if not root: return
-
-        self.inOrderTraversal(root.left)
-
-        # 这两个判断语句很重要，在 firstNode 没赋值的时候，如果 preNode 的值比当前值大，则对 firstNode 赋 preNode
-        # 如果 firstNode 赋过值了则不需要继续赋值，因为 secondNode 前一个元素（preNode）也满足这个条件
-        if not self.firstNode and self.preNode.val >= root.val:
-            self.firstNode = self.preNode
-
-        # 在 firstNode 赋值之后，才会赋 secondNode 的值，因为本来是顺序的，交换两个元素以后，大的元素（firstNode）在
-        # 前面，小的元素（secondNode）在后面。另外 firstNode 后面一个元素也满足这个条件，但是因为如果后面还满足条件，会
-        # 把当前值覆盖
-        if self.firstNode and self.preNode.val >= root.val:
-            self.secondNode = root
-
-        self.preNode = root # 当前值判断完后把当前 root 赋给 preNode
-
-        self.inOrderTraversal(root.right)
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        pre = None
+        cur = root
+        last = TreeNode(float('-inf'))
+        first = second = None
+        
+        while cur:
+            if not cur.left:
+                if last.val > cur.val:
+                    if not first: first = last
+                    second = cur
+                
+                last = cur
+                cur = cur.right
+            else:
+                pre = cur.left
+                while pre.right and pre.right != cur:
+                    pre = pre.right
+                    
+                if not pre.right:
+                    pre.right = cur
+                    cur = cur.left
+                else:
+                    pre.right = None
+                    
+                    if last.val > cur.val:
+                        if not first: first = last
+                        second = cur
+                        
+                    last = cur
+                    cur = cur.right
+                    
+        first.val, second.val = second.val, first.val
+        
 
 
 if __name__ == '__main__':
