@@ -50,7 +50,7 @@ from typing import List
 #                 if l % 2 == 0:
 #                     dp[i + 1][j + 1] = max(piles[i] + dp[i + 2][j + 1], piles[j] + dp[i + 1][j])
 #                 else:
-#                     dp[i][j] = min(-piles[i] + dp[i + 2][j + 1], -piles[j] + dp[i + 1][j])
+#                     dp[i + 1][j + 1] = min(-piles[i] + dp[i + 2][j + 1], -piles[j] + dp[i + 1][j])
                     
 #         return dp[1][n] > 0
 
