@@ -144,6 +144,40 @@ Do not use the eval built-in library function.
 #         return res
         
 # Without stack2
+# class Solution:
+#     def calculate(self, s: str) -> int:
+#         sign = "+"
+#         curr = 0    # 当前的数字
+#         lastNum = 0 # 上一个数字
+#         res = 0
+#         s = s + "+"
+        
+#         for c in s:
+#             if c == " ": continue
+            
+#             if c.isdigit():
+#                 curr = curr * 10 + int(c)
+#             else:
+#                 if sign == "+":
+#                     res += lastNum
+#                     lastNum = curr
+#                 elif sign == "-":
+#                     res += lastNum
+#                     lastNum = -curr
+#                 elif sign == "*":
+#                     lastNum = lastNum * curr
+#                 elif sign == "/":
+#                     if lastNum < 0:
+#                         lastNum = -(-lastNum // curr)
+#                     else:
+#                         lastNum = lastNum // curr
+                    
+#                 curr = 0
+#                 sign = c
+                
+#         return res + lastNum
+
+
 class Solution:
     def calculate(self, s: str) -> int:
         sign = "+"
@@ -159,22 +193,24 @@ class Solution:
                 curr = curr * 10 + int(c)
             else:
                 if sign == "+":
-                    res += lastNum
-                    lastNum = curr
+                    lastNum += curr
                 elif sign == "-":
-                    res += lastNum
-                    lastNum = -curr
+                    lastNum -= curr
                 elif sign == "*":
-                    lastNum = lastNum * curr
+                    lastNum *= curr
                 elif sign == "/":
-                    if lastNum < 0:
-                        lastNum = -(-lastNum // curr)
+                    if lastNum < 0 and lastNum % curr != 0:
+                        lastNum = lastNum // curr + 1
                     else:
                         lastNum = lastNum // curr
+
+                if c == "+" or c == "-":
+                    res += lastNum
+                    lastNum = 0
                     
                 curr = 0
                 sign = c
                 
-        return res + lastNum
+        return res
 
         
