@@ -43,7 +43,7 @@ class TreeNode:
         self.right = None
 
 class Solution:
-    # DFS: 92ms 50%
+    # DFS: 92ms 50% O(n)
     # maxSinglePath(node) = max(0, maxSinglePath(node.left), maxSinglePath(node.right)) + node.val
     # maxPathSum(node) = max(0, maxSinglePath(node.left)) + max(0, maxSinglePath(node.right)) + node.val
     def __init__(self):
@@ -64,6 +64,38 @@ class Solution:
 
         self.res = max(self.res, l + r + node.val)
         return max(l, r) + node.val
+
+
+# # My solution - DFS + memo: O(n) - O(n)
+# class Solution:
+#     def maxPathSum(self, root: TreeNode) -> int:
+#         # 找到从这个节点往下的最大长度
+#         @functools.lru_cache(None)
+#         def findMaxLength(node):
+#             if not node: return 0
+            
+#             if node.val >= 0:
+#                 # 如果 node.val >= 0，那直接往下找
+#                 return node.val + max(findMaxLength(node.left), findMaxLength(node.right))
+#             else:
+#                 # 如果 node.val < 0，那么判断下面的长度是否大于 node.val，如果不是则返回 0
+#                 left = findMaxLength(node.left)
+#                 right = findMaxLength(node.right)
+#                 return max(0, node.val + max(left, right))
+        
+#         # 用 DFS 遍历每一个 node，对于每一个node，计算 findMaxLength(node.left) + findMaxLength(node.right) + node.val，找到其中的最大值
+#         def dfs(node):
+#             # 这里如果 node 为空，则返回负无穷，这样如果树中没有正数就会返回最大的负数
+#             if not node: return float('-inf')
+            
+#             left = findMaxLength(node.left)
+#             right = findMaxLength(node.right)
+            
+#             return max(left + right + node.val, dfs(node.left), dfs(node.right))
+        
+#         return dfs(root)
+        
+
 
 if __name__ == '__main__':
     root = TreeNode(-10)
