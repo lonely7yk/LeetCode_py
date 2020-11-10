@@ -71,31 +71,60 @@ class Solution:
     #     tmp = str(bin(decimal))[2:]
     #     return tmp.zfill(8)
 
-    # Bit Operation: 96ms 99%
+    # # Bit Operation: 96ms 99%
+    # def validUtf8(self, data: List[int]) -> bool:
+    #     expect = 0
+
+    #     for num in data:
+    #         if 128 <= num <= 191:   # 表示 num 在 1000 0000~1011 1111
+    #             if expect == 0:
+    #                 return False
+    #             else:
+    #                 expect -= 1
+    #         else:
+    #             if expect != 0:
+    #                 return False
+    #             elif num >= 248:    # 1111 1000
+    #                 return False
+    #             elif num >= 240:    # 1111 0000
+    #                 expect = 3
+    #             elif num >= 224:    # 1110 0000
+    #                 expect = 2
+    #             elif num >= 192:    # 1100 0000
+    #                 expect = 1
+    #             else:
+    #                 expect = 0
+
+    #     return expect == 0
+
+
+    # My Solution: O(n)
+    class Solution:
     def validUtf8(self, data: List[int]) -> bool:
-        expect = 0
-
-        for num in data:
-            if 128 <= num <= 191:   # 表示 num 在 1000 0000~1011 1111
-                if expect == 0:
-                    return False
-                else:
-                    expect -= 1
-            else:
-                if expect != 0:
-                    return False
-                elif num >= 248:    # 1111 1000
-                    return False
-                elif num >= 240:    # 1111 0000
-                    expect = 3
-                elif num >= 224:    # 1110 0000
-                    expect = 2
-                elif num >= 192:    # 1100 0000
-                    expect = 1
-                else:
-                    expect = 0
-
-        return expect == 0
+        def calcBytes(num):
+            ranges = [(0, 128), (192, 224), (224, 240), (240, 248)]
+            for i, r in enumerate(ranges):
+                if r[0] <= num < r[1]: return i + 1
+                
+            return -1
+                
+        def check(num):
+            return 128 <= num < 192
+        
+        i = 0
+        n = len(data)
+        while i < n:
+            num = data[i]
+            b = calcBytes(num)
+            if b == -1: return False
+            if i + b - 1 >= n: return False
+            
+            for j in range(i + 1, i + b):
+                if not check(data[j]): return False
+                
+            i = i + b
+                
+        return True
 
 
 if __name__ == '__main__':
