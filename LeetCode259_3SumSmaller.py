@@ -32,7 +32,7 @@ n == nums.length
 from typing import List
 
 
-# O(n^2)
+# Two Pointers: O(n^2)
 class Solution:
     def threeSumSmaller(self, nums: List[int], target: int) -> int:
         nums.sort()
