@@ -41,8 +41,9 @@ the gap between the 5th and 6th stone is too large.
 """
 
 from typing import List
+import functools
 
-class Solution:
+# class Solution:
     # # DP+HashSet: O(n^2) 2616ms 5%
     # def canCross(self, stones: List[int]) -> bool:
     #     if len(stones) <= 1: return True
@@ -60,28 +61,51 @@ class Solution:
         
     #     return dp[n - 1]
 
-    # HashMap+HashSet: 216ms  60%
-    def canCross(self, stones: List[int]) -> bool:
-        if len(stones) <= 1: return True
-        if stones[1] != 1: return False
+    # # HashMap+HashSet: 216ms  60%
+    # def canCross(self, stones: List[int]) -> bool:
+    #     if len(stones) <= 1: return True
+    #     if stones[1] != 1: return False
         
-        n = len(stones)
-        dp = {}
-        for stone in stones:
-            dp[stone] = set()
-        dp[0].add(1)
+    #     n = len(stones)
+    #     dp = {}
+    #     for stone in stones:
+    #         dp[stone] = set()
+    #     dp[0].add(1)
 
-        for i in range(n):
-            stone = stones[i]
-            for step in dp[stone]:
-                if step + stone == stones[-1]: return True
+    #     for i in range(n):
+    #         stone = stones[i]
+    #         for step in dp[stone]:
+    #             if step + stone == stones[-1]: return True
                 
-                if step + stone in dp:
-                    if step - 1 > 0: dp[step + stone].add(step - 1)
-                    dp[step + stone].add(step)
-                    dp[step + stone].add(step + 1)
+    #             if step + stone in dp:
+    #                 if step - 1 > 0: dp[step + stone].add(step - 1)
+    #                 dp[step + stone].add(step)
+    #                 dp[step + stone].add(step + 1)
                     
-        return False
+    #     return False
+
+
+# DFS + memo
+class Solution:
+    def canCross(self, stones: List[int]) -> bool:
+        @functools.lru_cache(None)
+        def dfs(pos, lastStep, target):
+            if pos == target: return True
+            if pos > target: return False
+            if pos not in stoneSet: return False
+            
+            res = False
+            res = dfs(pos + lastStep, lastStep, target) | dfs(pos + lastStep + 1, lastStep + 1, target)
+            if lastStep > 1:
+                res |= dfs(pos + lastStep - 1, lastStep - 1, target)
+                
+            return res
+        
+        if stones[1] != 1: return False
+        stoneSet = set(stones)
+        return dfs(1, 1, stones[-1])
+
+        
                     
 if __name__ == '__main__':
     stones = [0,1,3,4,5,7,9,10,12]
