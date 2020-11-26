@@ -67,12 +67,42 @@ class Solution:
     #
     #     return maxLen
 
-    # DFS: 28ms 95.16%
+    # # DFS: 28ms 95.16%
+    # def longestSubstring(self, s: str, k: int) -> int:
+    #     for c in set(s):
+    #         if s.count(c) < k:
+    #             return max(self.longestSubstring(t, k) for t in s.split(c))
+    #     return len(s)
+
+
+    # Sliding Window: O(MaxUnique * n)
     def longestSubstring(self, s: str, k: int) -> int:
-        for c in set(s):
-            if s.count(c) < k:
-                return max(self.longestSubstring(t, k) for t in s.split(c))
-        return len(s)
+        n = len(s)
+        maxUnique = len(set(s)) # s 中不同字母的个数
+        res = 0
+        
+        for unique in range(1, maxUnique + 1):
+            curUnique = 0       # 当前滑动窗口中不同字母的数量
+            cntAtLeastK = 0     # 当前滑动窗口频率大于等于 K 的字母的数量
+            counter = collections.defaultdict(lambda: 0)
+            left, right = 0, 0  # 滑动窗口的左右边界
+            
+            while right < n:
+                if curUnique <= unique:
+                    if counter[s[right]] == 0: curUnique += 1
+                    counter[s[right]] += 1
+                    if counter[s[right]] == k: cntAtLeastK += 1
+                    right += 1
+                else:
+                    if counter[s[left]] == k: cntAtLeastK -= 1
+                    counter[s[left]] -= 1
+                    if counter[s[left]] == 0: curUnique -= 1
+                    left += 1
+                    
+                if curUnique == unique and cntAtLeastK == unique:
+                    res = max(res, right - left)
+                    
+        return res
 
 if __name__ == '__main__':
     solution = Solution()
