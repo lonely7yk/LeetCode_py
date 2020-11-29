@@ -38,26 +38,43 @@ from typing import List
 import collections
 
 
-# BFS: O(n)
+# # BFS: O(n)
+# class Solution:
+#     def canReach(self, arr: List[int], start: int) -> bool:
+#         n = len(arr)
+#         dq = collections.deque([start])
+#         seen = {start}
+        
+#         while dq:
+#             pos = dq.popleft()
+#             if arr[pos] == 0: return True
+                
+#             jumpLeft = pos - arr[pos]
+#             jumpRight = pos + arr[pos]
+            
+#             if jumpLeft >= 0 and jumpLeft not in seen:
+#                 dq.append(jumpLeft)
+#                 seen.add(jumpLeft)
+#             if jumpRight < n and jumpRight not in seen:
+#                 dq.append(jumpRight)
+#                 seen.add(jumpRight)
+                
+#         return False
+
+
+# DFS: O(n)
 class Solution:
     def canReach(self, arr: List[int], start: int) -> bool:
-        n = len(arr)
-        dq = collections.deque([start])
-        seen = {start}
-        
-        while dq:
-            pos = dq.popleft()
+        def dfs(pos):
+            if pos < 0 or pos >= n: return False
             if arr[pos] == 0: return True
-                
-            jumpLeft = pos - arr[pos]
-            jumpRight = pos + arr[pos]
+            if pos in seen: return False
             
-            if jumpLeft >= 0 and jumpLeft not in seen:
-                dq.append(jumpLeft)
-                seen.add(jumpLeft)
-            if jumpRight < n and jumpRight not in seen:
-                dq.append(jumpRight)
-                seen.add(jumpRight)
-                
-        return False
+            seen.add(pos)
+            return dfs(pos - arr[pos]) | dfs(pos + arr[pos])
+            
+        seen = set()
+        n = len(arr)
+        
+        return dfs(start)
         
