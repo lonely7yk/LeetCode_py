@@ -31,6 +31,8 @@ Note:
 0 <= K <= 10000
 """
 
+from typing import List
+
 
 class Solution:
     def smallestRangeI(self, A: List[int], K: int) -> int:
